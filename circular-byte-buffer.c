@@ -1,103 +1,94 @@
-/******************************************************************************
-
-                  Copyright (c) 2018 EmbedJournal
-
-  Permission is hereby granted, free of charge, to any person obtaining a copy
-  of this software and associated documentation files (the "Software"), to deal
-  in the Software without restriction, including without limitation the rights
-  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-  copies of the Software, and to permit persons to whom the Software is
-  furnished to do so, subject to the following conditions:
-
-  The above copyright notice and this permission notice shall be included in all
-  copies or substantial portions of the Software.
-
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-  SOFTWARE.
-
-    Author : Siddharth Chandrasekaran
-    Email  : siddharth@embedjournal.com
-    Date   : Sun Aug  5 09:42:31 IST 2018
-
-******************************************************************************/
-
 #include "circular-byte-buffer.h"
 
-int circ_bbuf_push(circ_bbuf_t *c, uint8_t data)
+
+uint32_t circ_bbuf_available_space(circ_bbuf_t *c)
 {
-    int next;
-
-    next = c->head + 1;  // next is where head will point to after this write.
-    if (next >= c->maxlen)
-        next = 0;
-
-    // if the head + 1 == tail, circular buffer is full. Notice that one slot
-    // is always left empty to differentiate empty vs full condition
-    if (next == c->tail)
-        return -1;
-
-    c->buffer[c->head] = data;  // Load data and then move
-    c->head = next;             // head to next data offset.
-    return 0;  // return success to indicate successful push.
+	return c->capacity - circ_bbuf_available_bytes_to_read(c);
 }
 
-int circ_bbuf_pop(circ_bbuf_t *c, uint8_t *data)
+uint32_t circ_bbuf_available_bytes_to_read(circ_bbuf_t *c)
 {
-    int next;
+    uint32_t bytes_to_read = 0;
 
-    if (c->head == c->tail)  // if the head == tail, we don't have any data
-        return -1;
-
-    next = c->tail + 1;  // next is where tail will point to after this read.
-    if(next >= c->maxlen)
-        next = 0;
-
-    *data = c->buffer[c->tail];  // Read data and then move
-    c->tail = next;              // tail to next offset.
-    return 0;  // return success to indicate successful push.
-}
-
-int circ_bbuf_free_space(circ_bbuf_t *c)
-{
-    int freeSpace;
-    freeSpace = c->tail - c->head;
-    if (freeSpace <= 0)
-        freeSpace += c->maxlen;
-    return freeSpace - 1; // -1 to account for the always-empty slot.
-}
-
-#ifdef C_UTILS_TESTING
-/* To test this module,
- * $ gcc -Wall -DC_UTILS_TESTING circular-byte-buffer.c
- * $ ./a.out
-*/
-
-CIRC_BBUF_DEF(my_circ_buf, 32);
-
-#include <stdio.h>
-
-int main()
-{
-    uint8_t out_data=0, in_data = 0x55;
-
-    if (circ_bbuf_push(&my_circ_buf, in_data)) {
-        printf("Out of space in CB\n");
-        return -1;
+    if (c->tail >= c->head)
+    {
+        bytes_to_read = c->capacity - c->tail + c->head;
+    }else
+    {
+        bytes_to_read = c->head - c->tail;
     }
 
-    if (circ_bbuf_pop(&my_circ_buf, &out_data)) {
-        printf("CB is empty\n");
-        return -1;
-    }
-
-    printf("Push: 0x%x\n", in_data);
-    printf("Pop:  0x%x\n", out_data);
-    return 0;
+    return bytes_to_read;
 }
 
-#endif
+uint8_t circ_bbuf_is_empty(circ_bbuf_t *c)
+{
+    return c->buffer_status == CBB_BUFFER_EMPTY;
+}
+
+uint8_t circ_bbuf_is_full(circ_bbuf_t *c)
+{
+    return c->buffer_status == CBB_BUFFER_FULL;
+}
+
+uint8_t circ_bbuf_push(circ_bbuf_t *c, uint8_t data)
+{
+    // If head is joining the tail, all the buffer has been filled.
+    if(c->head == c->tail && c->buffer_status == CBB_BUFFER_FILLING) c->buffer_status = CBB_BUFFER_FULL;
+    else if(c->head != c->tail) c->buffer_status = CBB_BUFFER_FILLING;
+
+    if(!circ_bbuf_is_full(c))
+    {
+        c->buffer[c->head++] = data;
+        // Reset the head if reaching the size of the buffer
+        if(c->head >= c->capacity) c->head = 0;
+    }
+
+    return c->buffer_status == CBB_BUFFER_FULL;
+}
+
+uint8_t circ_bbuf_pop(circ_bbuf_t *c, uint8_t *data)
+{
+    // If tail is joining the head, all the buffer has been read.
+    if(c->head == c->tail && c->buffer_status == CBB_BUFFER_FILLING) c->buffer_status = CBB_BUFFER_EMPTY;
+    else if(c->head != c->tail) c->buffer_status = CBB_BUFFER_FILLING;
+
+    if(!circ_bbuf_is_empty(c))
+    {
+        *data = c->buffer[c->tail++];
+        // Reset the tail if reaching the size of the buffer
+        if(c->tail >= c->capacity) c->tail = 0;
+    }
+
+    return c->buffer_status == CBB_BUFFER_EMPTY;
+}
+
+uint8_t circ_bbuf_push_bytes(circ_bbuf_t *c, const uint8_t *data, uint32_t len)
+{
+    uint8_t result = CBB_SUCCESS;
+
+    for (uint32_t i = 0; i < len; ++i) {
+        result = circ_bbuf_push(c, *data++);
+        // If buffer is empty
+        if(result != CBB_SUCCESS){
+            break;
+        }
+    }
+
+    return result;
+}
+
+uint8_t circ_bbuf_pop_bytes(circ_bbuf_t *c, uint32_t len, uint8_t *data)
+{
+    uint8_t result = CBB_SUCCESS;
+
+    for (uint32_t i = 0; i < len; i++) {
+        result = circ_bbuf_pop(c, data++);
+        // If buffer full
+        if(result != CBB_SUCCESS){
+            break;
+        }
+    }
+
+    return result;
+}
