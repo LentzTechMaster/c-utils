@@ -38,7 +38,8 @@ uint8_t tstp_buf_push(timestamp_buf_t *c, timestamp_t *data)
 
 	if(!tstp_buf_is_full(c))
 	{
-		c->buffer[c->head++] = data;
+		c->buffer[c->head].timestamp = data->timestamp;
+		c->buffer[c->head++].position = data->position;
 		// Reset the head if reaching the size of the buffer
 		if(c->head >= c->capacity) c->head = 0;
 	}
@@ -54,7 +55,8 @@ uint8_t tstp_buf_pop(timestamp_buf_t *c, timestamp_t *data)
 
 	if(!tstp_buf_is_empty(c))
 	{
-		*data = c->buffer[c->tail++];
+		data->position = c->buffer[c->tail].position;
+		data->timestamp = c->buffer[c->tail++].timestamp;
 		// Reset the tail if reaching the size of the buffer
 		if(c->tail >= c->capacity) c->tail = 0;
 	}

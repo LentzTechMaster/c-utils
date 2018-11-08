@@ -32,8 +32,8 @@ enum TB_RESULT{TB_SUCCESS, TB_BUFFER_EMPTY, TB_BUFFER_FULL, TB_BUFFER_FILLING};
         .buffer = x##_data_space,         \
         .head = 0,                        \
         .tail = 0,                        \
-        .capacity = y                     \
-        .buffer_status = T
+        .capacity = y,                    \
+        .buffer_status = TB_BUFFER_EMPTY  \
     }
 
 /**
@@ -48,7 +48,7 @@ uint32_t tstp_available_space(timestamp_buf_t *c);
 * @param c
 * @return Number of bytes to read in the buffer
 */
-uint32_t tstp_available_to_read(timestamp_buf_t *c)
+uint32_t tstp_available_to_read(timestamp_buf_t *c);
 
 /**
  * Check if circular buffer is empty
