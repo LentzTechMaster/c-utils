@@ -15,6 +15,7 @@ Julien Delvaux (aka amof)
 typedef struct {
 	uint64_t timestamp;
 	uint32_t position;
+	uint32_t length;
 } timestamp_t;
 
 typedef struct {
