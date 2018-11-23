@@ -1,9 +1,20 @@
 #include "circular-byte-buffer.h"
 
+void circ_bbuf_create_buffer(circ_bbuf_t *buf, const uint32_t size)
+{
+    circ_bbuf_t temp_buffer;
+    temp_buffer.buffer = (uint8_t *) malloc(size * sizeof(uint8_t));
+    temp_buffer.capacity = size;
+    temp_buffer.buffer_status = CBB_BUFFER_EMPTY;
+    temp_buffer.head = 0;
+    temp_buffer.tail = 0;
+
+    *buf = temp_buffer;
+}
 
 uint32_t circ_bbuf_available_space(circ_bbuf_t *c)
 {
-	return c->capacity - circ_bbuf_available_bytes_to_read(c);
+    return c->capacity - circ_bbuf_available_bytes_to_read(c);
 }
 
 uint32_t circ_bbuf_available_bytes_to_read(circ_bbuf_t *c)

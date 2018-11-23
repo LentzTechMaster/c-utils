@@ -15,17 +15,19 @@ Julien Delvaux (aka amof)
 #define __CIRCULAR_BYTE_BUFFER_H_
 
 #include <stdint.h>
+#include <stdlib.h>
 
 typedef struct {
-    uint8_t * const buffer;
+    uint8_t * buffer;
     uint32_t head;
     uint32_t tail;
-    const uint32_t capacity;
+    uint32_t capacity;
     uint8_t buffer_status;
 } circ_bbuf_t;
 
 enum CBB_RESULT{CBB_SUCCESS, CBB_BUFFER_EMPTY, CBB_BUFFER_FULL, CBB_BUFFER_FILLING};
 
+// This has to be used outside of micro controllers
 #define CIRC_BBUF_DEF(x,y)                 \
     uint8_t x##_data_space[y];             \
     circ_bbuf_t x = {                      \
@@ -35,6 +37,14 @@ enum CBB_RESULT{CBB_SUCCESS, CBB_BUFFER_EMPTY, CBB_BUFFER_FULL, CBB_BUFFER_FILLI
         .capacity = y,                     \
         .buffer_status = CBB_BUFFER_EMPTY  \
     }
+
+/**
+* Create the circ_bbuf_t buffer inside micro controller environment
+* @param buf
+* @param size
+* @return none
+*/
+void circ_bbuf_create_buffer(circ_bbuf_t *buf, const uint32_t size);
 
 /**
 * Gives how much free space is available in the buffer

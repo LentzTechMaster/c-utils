@@ -10,6 +10,7 @@ Julien Delvaux (aka amof)
 #define TIMESTAMP_BUFFER_H_
 
 #include <stdint.h>
+#include <stdlib.h>
 
 typedef struct {
 	uint64_t timestamp;
@@ -17,10 +18,10 @@ typedef struct {
 } timestamp_t;
 
 typedef struct {
-    timestamp_t * const buffer;
+    timestamp_t * buffer;
     uint32_t head;
     uint32_t tail;
-    const uint32_t capacity;
+    uint32_t capacity;
     uint8_t buffer_status;
 } timestamp_buf_t;
 
@@ -35,6 +36,14 @@ enum TB_RESULT{TB_SUCCESS, TB_BUFFER_EMPTY, TB_BUFFER_FULL, TB_BUFFER_FILLING};
         .capacity = y,                    \
         .buffer_status = TB_BUFFER_EMPTY  \
     }
+
+/**
+* Create the circ_bbuf_t buffer inside micro controller environment
+* @param buf
+* @param size
+* @return none
+*/
+void tstp_create_buffer(timestamp_buf_t *buf, const uint32_t size);
 
 /**
 * Gives how much free space is available in the buffer

@@ -1,5 +1,17 @@
 #include "timestamp-buffer.h"
 
+void tstp_create_buffer(timestamp_buf_t *buf, const uint32_t size)
+{
+    timestamp_buf_t temp_buffer;
+    temp_buffer.buffer = (timestamp_t *) malloc(size * sizeof(timestamp_t));
+    temp_buffer.capacity = size;
+    temp_buffer.buffer_status = TB_BUFFER_EMPTY;
+    temp_buffer.head = 0;
+    temp_buffer.tail = 0;
+
+    *buf = temp_buffer;
+}
+
 uint32_t tstp_available_space(timestamp_buf_t *c)
 {
     return c->capacity - tstp_available_to_read(c);
