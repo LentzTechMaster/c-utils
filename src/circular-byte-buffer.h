@@ -1,5 +1,16 @@
-/******************************************************************************
-
+/*
+							 *******************
+******************************* C HEADER FILE *******************************
+**                           *******************                           **
+**                                                                         **
+** project   : c-utils                                                     ** 
+** filename  : circular-byte-buffer                                        **
+** version   : 1                                                           **
+** date      : January 11, 2019                                            **
+** author    : Julien Delvaux                                              **
+** licence   : MIT                                                         **
+**                                                                         **
+*****************************************************************************
 Based on Siddharth Chandrasekaran library : https://github.com/EmbedJournal/c-utils
 
 This implementation provides in addition to original library:
@@ -7,10 +18,9 @@ This implementation provides in addition to original library:
  - Push/Retrieve multiples bytes with one function call
  - Full buffer size can be used : every byte in buffer is used
  - Embedded micro-controller targeted
+ 
+*/
 
-Julien Delvaux (aka amof)
-
-******************************************************************************/
 #ifndef __CIRCULAR_BYTE_BUFFER_H_
 #define __CIRCULAR_BYTE_BUFFER_H_
 

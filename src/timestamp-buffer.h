@@ -1,10 +1,21 @@
-/******************************************************************************
+/*
+							 *******************
+******************************* C HEADER FILE *******************************
+**                           *******************                           **
+**                                                                         **
+** project   : c-utils                                                     ** 
+** filename  : timestamp-buffer                                            **
+** version   : 1                                                           **
+** date      : January 11, 2019                                            **
+** author    : Julien Delvaux                                              **
+** licence   : MIT                                                         **
+**                                                                         **
+*****************************************************************************
 
-This library is intended to be used for timestamping elements in circular buffer.
+The library goal is to timestamp incoming data whatever the medium is.
+It is intended to be used with circular-byte-buffer library to store data.
 
-Julien Delvaux (aka amof)
-
-******************************************************************************/
+*/
 
 #ifndef TIMESTAMP_BUFFER_H_
 #define TIMESTAMP_BUFFER_H_
