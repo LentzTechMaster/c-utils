@@ -21,9 +21,12 @@ uint32_t tstp_available_to_read(timestamp_buf_t *c)
 {
     uint32_t bytes_to_read = 0;
 
-    if (c->tail >= c->head)
+    if (c->tail > c->head)
     {
         bytes_to_read = c->capacity - c->tail + c->head;
+    }else if (c->head == c->tail && c->buffer_status == TB_BUFFER_FULL)
+    {
+        bytes_to_read = c->capacity;
     }else
     {
         bytes_to_read = c->head - c->tail;
@@ -44,34 +47,45 @@ uint8_t tstp_buf_is_full(timestamp_buf_t *c)
 
 uint8_t tstp_buf_push(timestamp_buf_t *c, timestamp_t *data)
 {
-	// If head is joining the tail, all the buffer has been filled.
-	if(c->head == c->tail && c->buffer_status == TB_BUFFER_FILLING) c->buffer_status = TB_BUFFER_FULL;
-	else if(c->head != c->tail) c->buffer_status = TB_BUFFER_FILLING;
+	uint8_t result = TB_SUCCESS;
 
 	if(!tstp_buf_is_full(c))
 	{
 		c->buffer[c->head].timestamp = data->timestamp;
-		c->buffer[c->head++].position = data->position;
+		c->buffer[c->head].position = data->position;
+		c->buffer[c->head++].length = data->length;
+		c->buffer_status = TB_BUFFER_FILLING;
 		// Reset the head if reaching the size of the buffer
 		if(c->head >= c->capacity) c->head = 0;
-	}
+	}else
+    {
+        result = TB_BUFFER_FULL;
+    }
 
-	return c->buffer_status == TB_BUFFER_FULL;
+	if(c->head == c->tail && c->buffer_status == TB_BUFFER_FILLING) c->buffer_status = TB_BUFFER_FULL;
+
+	return result;
 }
 
 uint8_t tstp_buf_pop(timestamp_buf_t *c, timestamp_t *data)
 {
-	// If tail is joining the head, all the buffer has been read.
-	if(c->head == c->tail && c->buffer_status == TB_BUFFER_FILLING) c->buffer_status = TB_BUFFER_EMPTY;
-	else if(c->head != c->tail) c->buffer_status = TB_BUFFER_FILLING;
+	uint8_t result = TB_SUCCESS;
 
 	if(!tstp_buf_is_empty(c))
 	{
 		data->position = c->buffer[c->tail].position;
-		data->timestamp = c->buffer[c->tail++].timestamp;
+		data->timestamp = c->buffer[c->tail].timestamp;
+		data->length = c->buffer[c->tail++].length;
+		c->buffer_status == TB_BUFFER_FILLING;
 		// Reset the tail if reaching the size of the buffer
 		if(c->tail >= c->capacity) c->tail = 0;
 	}
+	else
+    {
+        result = TB_BUFFER_EMPTY;
+    }
 
-	return c->buffer_status == TB_BUFFER_EMPTY;
+	if(c->head == c->tail && c->buffer_status == TB_BUFFER_FILLING) c->buffer_status = TB_BUFFER_EMPTY;
+
+	return result;
 }
