@@ -76,7 +76,7 @@ uint8_t tstp_buf_pop(timestamp_buf_t *c, timestamp_t *data)
 		data->position = c->buffer[c->tail].position;
 		data->timestamp = c->buffer[c->tail].timestamp;
 		data->length = c->buffer[c->tail++].length;
-		c->buffer_status == TB_BUFFER_FILLING;
+		c->buffer_status = TB_BUFFER_FILLING;
 		// Reset the tail if reaching the size of the buffer
 		if(c->tail >= c->capacity) c->tail = 0;
 	}
