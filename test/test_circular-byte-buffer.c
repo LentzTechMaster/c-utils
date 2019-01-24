@@ -15,6 +15,19 @@ void tearDown(void)
 {
 }
 
+void test_cbb_reset_buffer()
+{
+    uint8_t input_array[]= {11,22,33,44,55,66};
+    circ_bbuf_push_bytes(&buffer, input_array, sizeof(input_array));
+
+    circ_bbuf_reset_buffer(&buffer);
+    
+    TEST_ASSERT_EQUAL_UINT32(buffer_size, circ_bbuf_available_space(&buffer));
+    TEST_ASSERT_EQUAL_UINT32(0, circ_bbuf_available_bytes_to_read(&buffer));
+    TEST_ASSERT_EQUAL_UINT8(TRUE, circ_bbuf_is_empty(&buffer));
+    TEST_ASSERT_EQUAL_UINT8(FALSE, circ_bbuf_is_full(&buffer));
+}
+
 void test_cbb_empty_buffer()
 {
     TEST_ASSERT_EQUAL_UINT32(buffer_size, circ_bbuf_available_space(&buffer));

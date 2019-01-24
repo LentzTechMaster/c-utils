@@ -12,6 +12,13 @@ void tstp_create_buffer(timestamp_buf_t *buf, const uint32_t size)
     *buf = temp_buffer;
 }
 
+void tstp_reset_buffer(timestamp_buf_t *c)
+{
+    c->tail = 0;
+    c->head = 0;
+    c->buffer_status = TB_BUFFER_EMPTY;
+}
+
 uint32_t tstp_available_space(timestamp_buf_t *c)
 {
     return c->capacity - tstp_available_to_read(c);

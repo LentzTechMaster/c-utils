@@ -57,6 +57,13 @@ enum CBB_RESULT{CBB_SUCCESS, CBB_BUFFER_EMPTY, CBB_BUFFER_FULL, CBB_BUFFER_FILLI
 void circ_bbuf_create_buffer(circ_bbuf_t *buf, const uint32_t size);
 
 /**
+* Reset all the pointers associated with buffer
+* @param c
+* @return none
+*/
+void circ_bbuf_reset_buffer(circ_bbuf_t *c);
+
+/**
 * Gives how much free space is available in the buffer
 * @param c
 * @return Number of bytes that can be put into the buffer

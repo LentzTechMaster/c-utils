@@ -58,6 +58,13 @@ enum TB_RESULT{TB_SUCCESS, TB_BUFFER_EMPTY, TB_BUFFER_FULL, TB_BUFFER_FILLING};
 void tstp_create_buffer(timestamp_buf_t *buf, const uint32_t size);
 
 /**
+* Reset all the pointers associated with buffer
+* @param c
+* @return none
+*/
+void tstp_reset_buffer(timestamp_buf_t *c);
+
+/**
 * Gives how much free space is available in the buffer
 * @param c
 * @return Number of bytes that can be put into the buffer

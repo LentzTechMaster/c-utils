@@ -12,6 +12,13 @@ void circ_bbuf_create_buffer(circ_bbuf_t *buf, const uint32_t size)
     *buf = temp_buffer;
 }
 
+void circ_bbuf_reset_buffer(circ_bbuf_t *c)
+{
+    c->tail = 0;
+    c->head = 0;
+    c->buffer_status = CBB_BUFFER_EMPTY;
+}
+
 uint32_t circ_bbuf_available_space(circ_bbuf_t *c)
 {
     return c->capacity - circ_bbuf_available_bytes_to_read(c);
