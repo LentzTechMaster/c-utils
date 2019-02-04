@@ -45,9 +45,30 @@ void test_cbb_insert_byte()
     TEST_ASSERT_EQUAL_UINT8(FALSE, circ_bbuf_is_full(&buffer));
 }
 
+void test_cbb_peek_read_byte()
+{
+    uint8_t poped_from_buffer = 0;
+    circ_bbuf_push(&buffer, 0x10);
+
+    TEST_ASSERT_EQUAL_UINT8(CBB_SUCCESS, circ_bbuf_peek(&buffer, &poped_from_buffer));
+    TEST_ASSERT_EQUAL_UINT8(0x10, poped_from_buffer);
+    poped_from_buffer = 0;
+
+    TEST_ASSERT_EQUAL_UINT32(buffer_size - 1, circ_bbuf_available_space(&buffer));
+    TEST_ASSERT_EQUAL_UINT32(1, circ_bbuf_available_bytes_to_read(&buffer));
+
+    TEST_ASSERT_EQUAL_UINT8(CBB_SUCCESS, circ_bbuf_pop(&buffer, &poped_from_buffer));
+    TEST_ASSERT_EQUAL_UINT8(0x10, poped_from_buffer);
+
+    TEST_ASSERT_EQUAL_UINT32(buffer_size, circ_bbuf_available_space(&buffer));
+    TEST_ASSERT_EQUAL_UINT32(0, circ_bbuf_available_bytes_to_read(&buffer));
+    TEST_ASSERT_EQUAL_UINT8(TRUE, circ_bbuf_is_empty(&buffer));
+    TEST_ASSERT_EQUAL_UINT8(FALSE, circ_bbuf_is_full(&buffer));
+}
+
 void test_cbb_read_byte()
 {
-    uint8_t poped_from_buffer;
+    uint8_t poped_from_buffer = 0;
     circ_bbuf_push(&buffer, 0x10);
 
     TEST_ASSERT_EQUAL_UINT8(CBB_SUCCESS, circ_bbuf_pop(&buffer, &poped_from_buffer));

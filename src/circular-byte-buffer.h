@@ -94,6 +94,15 @@ uint8_t circ_bbuf_is_empty(circ_bbuf_t *c);
 uint8_t circ_bbuf_is_full(circ_bbuf_t *c);
 
 /**
+ * Peek the next byte to be read from buffer
+ * @param c
+ * @param data
+ * @return CBB_SUCCESS
+ *         CBB_BUFFER_EMPTY
+ */
+uint8_t circ_bbuf_peek(circ_bbuf_t *c, uint8_t *data);
+
+/**
  * Retrieve one byte from buffer
  * @param c
  * @param data

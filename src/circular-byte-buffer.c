@@ -52,6 +52,21 @@ uint8_t circ_bbuf_is_full(circ_bbuf_t *c)
     return c->buffer_status == CBB_BUFFER_FULL;
 }
 
+uint8_t circ_bbuf_peek(circ_bbuf_t *c, uint8_t *data)
+{
+    uint8_t result = CBB_SUCCESS;
+
+    if(!circ_bbuf_is_empty(c))
+    {
+        *data = c->buffer[c->tail];
+    }else
+    {
+        result = CBB_BUFFER_EMPTY;
+    }
+
+    return result;
+}
+
 uint8_t circ_bbuf_push(circ_bbuf_t *c, uint8_t data)
 {
     uint8_t result = CBB_SUCCESS;
