@@ -64,6 +64,13 @@ void circ_bbuf_create_buffer(circ_bbuf_t *buf, const uint32_t size);
 void circ_bbuf_reset_buffer(circ_bbuf_t *c);
 
 /**
+* Frees buffer memory that has sbeen alocated in circ_bbuf_create_buffer function.
+* @param c
+* @return none
+*/
+void circ_bbuf_free_buffer(circ_bbuf_t *c);
+
+/**
 * Gives how much free space is available in the buffer
 * @param c
 * @return Number of bytes that can be put into the buffer

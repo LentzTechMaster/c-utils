@@ -19,6 +19,11 @@ void circ_bbuf_reset_buffer(circ_bbuf_t *c)
     c->buffer_status = CBB_BUFFER_EMPTY;
 }
 
+void circ_bbuf_free_buffer(circ_bbuf_t *c)
+{
+    free(c->buffer);
+}
+
 uint32_t circ_bbuf_available_space(circ_bbuf_t *c)
 {
     return c->capacity - circ_bbuf_available_bytes_to_read(c);
@@ -109,7 +114,7 @@ uint8_t circ_bbuf_pop(circ_bbuf_t *c, uint8_t *data)
     return result;
 }
 
-uint8_t circ_bbuf_push_bytes(circ_bbuf_t *c, const uint8_t *data, uint32_t len)
+uint8_t circ_bbuf_push_bytes(circ_bbuf_t *c, uint8_t *data, uint32_t len)
 {
     uint8_t result = CBB_SUCCESS;
 
