@@ -32,12 +32,11 @@ licence   : MIT
 */
 
 
-#include <stdint.h>
-#include <stdlib.h>
+#include <stdint.h>//for types
+#include <stdlib.h>//for malloc
+#include <string.h>//for memcpy
 
-#ifdef CEEDLING_WARNING_MEMCPY
-#include <string.h>
-#endif
+
 
 typedef struct {
     void * pointer;

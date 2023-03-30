@@ -45,11 +45,9 @@
   :test:
     - *common_defines
     - TEST
-    - CEEDLING_WARNING_MEMCPY
   :test_preprocess:
     - *common_defines
     - TEST
-    - CEEDLING_WARNING_MEMCPY
 
 :cmock:
   :mock_prefix: mock_
