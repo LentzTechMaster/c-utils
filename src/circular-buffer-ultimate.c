@@ -23,7 +23,7 @@ void circ_buf_free_buffer(circ_buf_t *buf)
     free(buf->buffer);
 }
 
-void circ_bbuf_reset_buffer(circ_buf_t *buf)
+void circ_buf_reset_buffer(circ_buf_t *buf)
 {
     circ_buf_free_buffer(buf);
     circ_buf_init_buffer(buf, buf->capacity, buf->max_memory_size);

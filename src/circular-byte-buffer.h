@@ -18,7 +18,7 @@ This implementation provides in addition to original library:
  - Push/Retrieve multiples bytes with one function call
  - Full buffer size can be used : every byte in buffer is used
  - Embedded micro-controller targeted
- 
+
 */
 
 #ifndef __CIRCULAR_BYTE_BUFFER_H_
@@ -136,7 +136,7 @@ uint8_t circ_bbuf_push(circ_bbuf_t *c, uint8_t data);
  * @return CBB_SUCCESS
  *         CBB_BUFFER_FULL
  */
-uint8_t circ_bbuf_push_bytes(circ_bbuf_t *c, const uint8_t *data, uint32_t len);
+uint8_t circ_bbuf_push_bytes(circ_bbuf_t *c, uint8_t *data, uint32_t len);
 
 /**
  * Retrieve multiples bytes from buffer

@@ -1,3 +1,8 @@
+/*
+                                                                                                                                       
+*/
+
+
 #include <stdint.h>
 #include <stdlib.h>
 
@@ -49,7 +54,7 @@ void circ_buf_free_buffer(circ_buf_t *buf);
  * 
  * @param buf Buffer pointer.
  */
-void circ_bbuf_reset_buffer(circ_buf_t *buf);
+void circ_buf_reset_buffer(circ_buf_t *buf);
 
 /**
  * @brief Gets the number of elements inside the buffer
