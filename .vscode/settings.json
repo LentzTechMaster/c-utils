@@ -2,7 +2,10 @@
     "files.associations": {
         "circular-byte-buffer.h": "c",
         "time.h": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "stdint.h": "c",
+        "string.h": "c",
+        "circular-buffer-flex.h": "c"
     }
 
     
