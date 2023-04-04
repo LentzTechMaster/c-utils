@@ -106,6 +106,8 @@ uint8_t circ_buf_pop_unsafe(circ_buf_t *buf, circ_buf_elem_t *elem)
     {
         *elem = buf->buffer[buf->tail++];
         buf->buffer_status = CB_BUFFER_FILLING;
+        
+        buf->memory_size -= elem->size;
         // Reset the tail if reaching the size of the buffer
         if(buf->tail >= buf->capacity) buf->tail = 0;
     }else
@@ -151,9 +153,11 @@ uint8_t circ_buf_pop_safe(circ_buf_t *buf, void *data)
     circ_buf_elem_t elem;
 
     result = circ_buf_pop_unsafe(buf, &elem);
-
-    memcpy(data, elem.pointer, elem.size);
-    free(elem.pointer);
+    if(result == CB_SUCCESS)
+    {
+        memcpy(data, elem.pointer, elem.size);
+        free(elem.pointer);
+    }
 
     return result;
 }

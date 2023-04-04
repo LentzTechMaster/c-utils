@@ -32,9 +32,16 @@ licence   : MIT
 */
 
 
-#include <stdint.h>//for types
-#include <stdlib.h>//for malloc
 #include <string.h>//for memcpy
+
+#if defined(TEST)
+    #include <stdint.h>//for types
+    #include <stdlib.h>//for malloc
+#else
+    #include "compiler.h"
+#endif
+
+
 
 
 
