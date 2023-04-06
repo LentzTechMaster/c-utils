@@ -54,7 +54,7 @@ typedef struct {
  * @brief Enumeration of all results possible when doing action with the circular buffer
  * 
  */
-enum CB_RESULT{CB_SUCCESS, CB_BUFFER_EMPTY, CB_BUFFER_FULL, CB_BUFFER_FILLING};
+enum CBF_RESULT{CBF_SUCCESS, CBF_BUFFER_EMPTY, CBF_BUFFER_FULL, CBF_BUFFER_FILLING};
 
 void circ_buf_flex_init_buffer(circ_buf_flex_t *buf, const uint32_t capacity, const uint16_t element_size);
 void circ_buf_flex_free(circ_buf_flex_t *buf);
