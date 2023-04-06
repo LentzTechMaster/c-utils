@@ -161,6 +161,7 @@ void test_pop_safe()
         TEST_ASSERT_EQUAL_UINT32(i*i, rcvd_B.b2[i]);
     }
     TEST_ASSERT_EQUAL_UINT8(TRUE, circ_buf_is_empty(&buffer));
+    TEST_ASSERT_EQUAL_UINT32(0, buffer.memory_size);
 }
 
 void test_full()
