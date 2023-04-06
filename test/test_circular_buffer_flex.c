@@ -75,3 +75,70 @@ void test_push_pop()
 
     TEST_ASSERT_EQUAL_UINT8(TRUE, circ_buf_flex_is_empty(&buffer));
 }
+
+void test_pop_using_available_elements_to_read()
+{
+    B_struct_t b1;
+    b1.b1 = 'D';
+    for (uint8_t i = 0; i < b2_size; i++)
+    {
+        b1.b2[i] = i * i;
+    }
+    
+
+    B_struct_t b2;
+    b2.b1 = 'T';
+    for (uint8_t i = 0; i < b2_size; i++)
+    {
+        b2.b2[i] = i * i/2;
+    }
+    for (uint8_t i = 0; i < buffer_size/2; i++)
+    {
+        circ_buf_flex_push(&buffer, &b1);
+        circ_buf_flex_push(&buffer, &b2);
+    }
+    TEST_ASSERT_EQUAL_UINT8(TRUE, circ_buf_flex_is_full(&buffer));
+
+    while(circ_buf_flex_available_elements_to_read(&buffer))
+    {
+        B_struct_t b;
+        circ_buf_flex_pop(&buffer, &b);
+    }
+    
+    TEST_ASSERT_EQUAL_UINT8(TRUE, circ_buf_flex_is_empty(&buffer));
+
+}
+
+void test_full()
+{
+    B_struct_t b1;
+    b1.b1 = 'D';
+    for (uint8_t i = 0; i < b2_size; i++)
+    {
+        b1.b2[i] = i * i;
+    }
+    
+
+    B_struct_t b2;
+    b2.b1 = 'T';
+    for (uint8_t i = 0; i < b2_size; i++)
+    {
+        b2.b2[i] = i * i/2;
+    }
+    for (uint8_t i = 0; i < buffer_size/2; i++)
+    {
+        circ_buf_flex_push(&buffer, &b1);
+        circ_buf_flex_push(&buffer, &b2);
+    }
+    TEST_ASSERT_EQUAL_UINT8(TRUE, circ_buf_flex_is_full(&buffer));
+    
+    TEST_ASSERT_EQUAL_UINT8(CB_BUFFER_FULL, circ_buf_flex_push(&buffer, &b1));
+}
+
+void test_empty_pop()
+{
+    test_pop_using_available_elements_to_read();
+    B_struct_t b;
+    TEST_ASSERT_EQUAL_UINT8(CB_BUFFER_EMPTY, circ_buf_flex_pop(&buffer, &b));
+
+}
