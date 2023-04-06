@@ -12,6 +12,11 @@ void tstp_create_buffer(timestamp_buf_t *buf, const uint32_t size)
     *buf = temp_buffer;
 }
 
+void tstp_free_buffer(timestamp_buf_t *buf)
+{
+    free(buf->buffer);
+}
+
 void tstp_reset_buffer(timestamp_buf_t *c)
 {
     c->tail = 0;
