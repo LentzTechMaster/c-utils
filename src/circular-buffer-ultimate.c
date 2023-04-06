@@ -68,7 +68,7 @@ uint8_t circ_buf_push_unsafe(circ_buf_t* buf, void* data, uint32_t data_size, ui
 
     if(!circ_buf_is_full(buf))
     {
-        if(buf->max_memory_size == 0 | (buf->memory_size + data_size) <= buf->max_memory_size)
+        if((buf->max_memory_size == 0) | ((buf->memory_size + data_size) <= buf->max_memory_size))
         {
             circ_buf_elem_t elem;
             elem.pointer = data;
