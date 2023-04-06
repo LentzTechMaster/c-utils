@@ -165,10 +165,10 @@ uint8_t circ_buf_peek_size_and_type(circ_buf_t *buf, uint32_t *size, uint32_t *t
 uint8_t circ_buf_push_safe(circ_buf_t *buf, void *data, uint32_t data_size, uint32_t type);
 
 /**
- * @brief This makes a copy of the data inside the buffer to data pointer. This function is safe meaning it takes care of the memory interactions.
+ * @brief This makes a copy of the data inside the buffer to the given data pointer. This function is safe meaning it takes care of the memory interactions.
  * 
  * @param buf Buffer pointer.
  * @param data Pointer to data.
- * @return uint8_t 
+ * @return uint8_t Action status.
  */
 uint8_t circ_buf_pop_safe(circ_buf_t *buf, void *data);
