@@ -62,7 +62,7 @@ uint8_t circ_buf_flex_push(circ_buf_flex_t* buf, void* data)
 
     if(!circ_buf_flex_is_full(buf))
     {
-        memcpy((buf->buffer) + (buf->head++) * (buf->buffer_element_size), data, buf->buffer_element_size);
+        memcpy(((uint8_t*)buf->buffer) + (buf->head++) * (buf->buffer_element_size), data, buf->buffer_element_size);
         //buf->buffer[buf->head++] = *data;
         buf->buffer_status = CBF_BUFFER_FILLING;
         // Reset the head if reaching the size of the buffer
@@ -85,7 +85,7 @@ uint8_t circ_buf_flex_pop(circ_buf_flex_t *buf, void* data)
 
     if (!circ_buf_flex_is_empty(buf))
     {
-        memcpy(data, (buf->buffer)+(buf->tail++)*(buf->buffer_element_size), buf->buffer_element_size);
+        memcpy(data, ((uint8_t*)buf->buffer)+(buf->tail++)*(buf->buffer_element_size), buf->buffer_element_size);
         //memcpy((uint8_t*)data, buf->buffer[buf->tail], buf->buffer_element_size);
         buf->buffer_status = CBF_BUFFER_FILLING;
         
