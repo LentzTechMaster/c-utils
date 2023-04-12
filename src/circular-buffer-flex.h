@@ -117,10 +117,18 @@ uint8_t circ_buf_flex_is_full(circ_buf_flex_t *buf);
 uint8_t circ_buf_flex_push(circ_buf_flex_t* buf, void* data);
 
 /**
- * @brief This makes a copy of the data inside the buffer to the given data pointer.
+ * @brief This makes a copy of the oldest data inside the buffer to the given data pointer.
  * 
  * @param buf Buffer pointer.
  * @param data Pointer to data.
  * @return uint8_t Action status.
  */
 uint8_t circ_buf_flex_pop(circ_buf_flex_t *buf, void* data);
+
+/**
+ * @brief This drop the oldest data inside the buffer.
+ * 
+ * @param buf Buffer pointer.
+ * @return uint8_t Action status.
+ */
+uint8_t circ_buf_flex_drop(circ_buf_flex_t *buf);

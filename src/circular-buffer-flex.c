@@ -102,3 +102,26 @@ uint8_t circ_buf_flex_pop(circ_buf_flex_t *buf, void* data)
 
     return result;
 }
+
+uint8_t circ_buf_flex_drop(circ_buf_flex_t *buf)
+{
+    uint8_t result = CBF_SUCCESS;
+
+    if (!circ_buf_flex_is_empty(buf))
+    {
+        buf->tail++;
+        buf->buffer_status = CBF_BUFFER_FILLING;
+        
+        // Reset the tail if reaching the size of the buffer
+        if (buf->tail >= buf->capacity) buf->tail = 0;
+    }
+    else
+    {
+        result = CBF_BUFFER_EMPTY;
+    }
+    
+    // If tail is joining the head, all the buffer has been read.
+    if (buf->head == buf->tail && buf->buffer_status == CBF_BUFFER_FILLING) buf->buffer_status = CBF_BUFFER_EMPTY;
+
+    return result;
+}
