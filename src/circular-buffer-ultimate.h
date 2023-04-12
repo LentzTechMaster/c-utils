@@ -1,12 +1,12 @@
 /*
 This library can help you store any type of data inside a circular buffer.
-You have the choice to manage the memory your self by using usafe functions for pushing and poping operations.
+You have the choice to manage the memory your self by using unsafe functions for pushing and popping operations.
 Or you can use the safe functions and this is made for you.
 
 You can setup a memory limit.
 
 /!\ the circular buffer overwrite if full has to be done y user by getting status of the push function,
-if it is not sucessful you can handle the poping of a element and then retry a push.
+if it is not successful you can handle the popping of a element and then retry a push.
 
 Check the tests to better understand how to use the lib.
 
@@ -69,7 +69,7 @@ typedef struct {
 enum CB_RESULT{CB_SUCCESS, CB_BUFFER_EMPTY, CB_BUFFER_FULL, CB_BUFFER_FILLING, CB_BUFFER_MAX_MEMORY_REACHED};
 
 /**
- * @brief Initiate the buffer and alocate the necessary memory depending on the capacity given by user
+ * @brief Initiate the buffer and allocate the necessary memory depending on the capacity given by user
  * 
  * @param buf Buffer pointer.
  * @param capacity Number of elements inside the buffer
@@ -78,7 +78,7 @@ enum CB_RESULT{CB_SUCCESS, CB_BUFFER_EMPTY, CB_BUFFER_FULL, CB_BUFFER_FILLING, C
 void circ_buf_init_buffer(circ_buf_t *buf, const uint32_t capacity, const uint32_t max_memory_size);
 
 /**
- * @brief Free memory alocated for each element content of the buffer and also the memory alocated inside the init. 
+ * @brief Free memory allocated for each element content of the buffer and also the memory allocated inside the init. 
  * 
  * @param buf Buffer pointer.
  */
@@ -124,7 +124,7 @@ uint8_t circ_buf_is_empty(circ_buf_t *buf);
 uint8_t circ_buf_is_full(circ_buf_t *buf);
 
 /**
- * @brief This pushes the data inside the buffer. /!\ This function not safe: user has to alocate memory himself and therefore free it!
+ * @brief This pushes the data inside the buffer. /!\ This function not safe: user has to allocate memory himself and therefore free it!
  * 
  * @param buf Buffer pointer.
  * @param data Pointer to data.
@@ -135,7 +135,7 @@ uint8_t circ_buf_is_full(circ_buf_t *buf);
 uint8_t circ_buf_push_unsafe(circ_buf_t *buf, void *data, uint32_t data_size, uint32_t type);
 
 /**
- * @brief This give to the user a circular buffer element giving access to the data via a pointer. /!\ This function not safe: user has to alocate memory himself and therefore free it!
+ * @brief This give to the user a circular buffer element giving access to the data via a pointer. /!\ This function not safe: user has to allocate memory himself and therefore free it!
  * 
  * @param buf Buffer pointer.
  * @param elem Point to circular buffer element.
@@ -144,7 +144,7 @@ uint8_t circ_buf_push_unsafe(circ_buf_t *buf, void *data, uint32_t data_size, ui
 uint8_t circ_buf_pop_unsafe(circ_buf_t *buf, circ_buf_elem_t *elem);
 
 /**
- * @brief This give the user a peek at what is the size and the type of the next data to pop. It is very usefull to have when dealing with safe poping.
+ * @brief This give the user a peek at what is the size and the type of the next data to pop. It is very useful to have when dealing with safe popping.
  * 
  * @param buf Buffer pointer.
  * @param size Integer pointer to store the size.

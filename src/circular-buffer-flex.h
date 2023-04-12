@@ -2,7 +2,7 @@
 This library can help you store any type of data inside a circular buffer but data has to be always the same byte length.
 
 /!\ the circular buffer overwrite if full has to be done by user by getting status of the push function,
-if it is not sucessful you can handle the poping of a element and then retry a push.
+if it is not successful you can handle the popping of a element and then retry a push.
 
 Check the tests to better understand how to use the lib.
 
@@ -53,7 +53,7 @@ typedef struct {
 enum CBF_RESULT{CBF_SUCCESS, CBF_BUFFER_EMPTY, CBF_BUFFER_FULL, CBF_BUFFER_FILLING};
 
 /**
- * @brief Initiate the buffer and alocate the necessary memory depending on the capacity and the element_size given by user
+ * @brief Initiate the buffer and allocated the necessary memory depending on the capacity and the element_size given by user
  * 
  * @param buf Buffer pointer.
  * @param capacity Number of elements inside the buffer
@@ -62,7 +62,7 @@ enum CBF_RESULT{CBF_SUCCESS, CBF_BUFFER_EMPTY, CBF_BUFFER_FULL, CBF_BUFFER_FILLI
 void circ_buf_flex_init_buffer(circ_buf_flex_t *buf, const uint32_t capacity, const uint16_t element_size);
 
 /**
- * @brief Free the memory alocated inside the init.
+ * @brief Free the memory allocated inside the init.
  * 
  * @param buf Buffer pointer.
  */
