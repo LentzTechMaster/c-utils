@@ -19,8 +19,9 @@ void circ_buf_flex_free(circ_buf_flex_t *buf)
 
 void circ_buf_flex_reset(circ_buf_flex_t *buf)
 {
-    circ_buf_flex_free(buf);
-    circ_buf_flex_init_buffer(buf, buf->capacity, buf->buffer_element_size);
+    buf->tail = 0;
+    buf->head = 0;
+    buf->buffer_status = CBF_BUFFER_EMPTY;
 }
 
 uint32_t circ_buf_flex_available_elements_to_read(circ_buf_flex_t *buf)
